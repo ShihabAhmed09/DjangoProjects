@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+{% block css %} {% endblock css %}
+
+{% block homeactive %} active {% endblock homeactive %}
+
+{% block body %}
+{% for post in posts %}
+<div class="row g-0 border rounded overflow-hidden flex-md-row p-4 mb-4 shadow-sm h-md-250 position-relative">
+    <div class="col-md-2 d-flex flex-column position-static">
+        <img class="rounded-circle" width="125px" height="125px" src="{{ post.author.profile.profile_pic.url }}">
+    </div>
+    <div class="col-md-10 p-1 d-flex flex-column position-static">
+        <div class="border-bottom mx-4">
+            <strong class="d-inline-block mb-1 me-2 text-primary">
+                <a href="{% url 'user_posts' post.author.username %}" class="text-decoration-none">{{ post.author }}</a>
+            </strong>
+            <small class="text-muted">{{ post.publish_date|date:"F d, Y" }}</small>
+        </div>
+        <h2 class="mt-2 mx-4"><a href="{% url 'post_detail' post.slug %}" class="text-decoration-none text-dark">
+            {{ post.title }}</a></h2>  <!--post.post_id will be post.id if we don't use our own primary key in model-->
+        <p class="article-content mx-4">{{ post.content|striptags|truncatechars:300 }}</p>
+    </div>
+</div>
+{% endfor %}
+
+<!--Pagination-->
+{% include 'blog/pagination.html' %}
+
+{% endblock body %}
+
+{% block js %} {% endblock js %}

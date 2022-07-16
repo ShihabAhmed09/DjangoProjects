@@ -1,0 +1,72 @@
+{% extends 'blog/base.html' %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<h3 class="mb-3">{{ page_obj.paginator.count }} Result{% if page_obj.paginator.count > 1 %}s{% endif %} Found</h3>
+{% if page_obj|length < 1 %}
+<div class="card-section">
+    <p aria-level="3" role="heading" style="padding-top:.33em">
+        Your search - <span><b>{{query}}</b></span>- did not match any documents.
+    </p>
+    <p style="margin-top:1em">Suggestions:</p>
+    <ul style="margin-left:1.3em;margin-bottom:2em">
+        <li>Make sure that all words are spelled correctly.</li>
+        <li>Try different keywords.</li>
+        <li>Try more general keywords.</li>
+        {% if query_length > 80 %}
+        <li>Try fewer keywords.</li>
+        {% endif %}
+    </ul>
+</div>
+{% endif %}
+
+{% for post in page_obj %}
+<div class="row g-0 border rounded overflow-hidden flex-md-row p-4 mb-4 shadow-sm h-md-250 position-relative">
+    <div class="col-md-2 d-flex flex-column position-static">
+        <img class="rounded-circle" width="125px" height="125px" src="{{ post.author.profile.profile_pic.url }}">
+    </div>
+    <div class="col-md-10 p-1 d-flex flex-column position-static">
+        <div class="border-bottom mx-4">
+            <strong class="d-inline-block mb-1 me-2 text-primary">
+                <a href="{% url 'user_posts' post.author.username %}" class="text-decoration-none">{{ post.author }}</a>
+            </strong>
+            <small class="text-muted">{{ post.publish_date|date:"F d, Y" }}</small>
+        </div>
+        <h2 class="mt-2 mx-4"><a href="{% url 'post_detail' post.slug %}" class="text-decoration-none text-dark">
+            {{ post.title }}</a></h2>  <!--post.post_id will be post.id if we don't use our oun primary key in model-->
+        <p class="article-content preview mx-4">{{ post.content|striptags|truncatechars:300 }}</p>
+    </div>
+</div>
+{% endfor %}
+
+<!--Pagination-->
+{% if page_obj.has_other_pages %}
+    {% if page_obj.has_previous %}  <!--For previous pages-->
+        <a class="btn btn-outline-info mb-4" href="?page=1{% if query %}&q={{ query }}{% endif %}">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}">Previous</a>
+    {% endif %}
+    <!--page_range: Loop over all pages in paginator, paginator: get current page paginator object-->
+    {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}  <!--current page-->
+            <a class="btn btn-info mb-4" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <!--previous and next 2 pages of current page-->
+            <a class="btn btn-outline-info mb-4" href="?page={{ num }}{% if query %}&q={{ query }}{% endif %}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}  <!--For Next pages-->
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}{% if query %}&q={{ query }}{% endif %}">Last</a>
+    {% endif %}
+{% endif %}
+
+{% endblock body %}
+
+{% block js %}
+<!--<script>-->
+<!--    let previews = document.getElementsByClassName('preview');-->
+<!--    Array.from(previews).forEach((element)=>{-->
+<!--        element.innerHTML = element.innerText  // make inner html as inner text-->
+<!--    })-->
+<!--</script>-->
+{% endblock js %}

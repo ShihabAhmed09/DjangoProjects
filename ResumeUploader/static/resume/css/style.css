@@ -1,0 +1,12 @@
+#id_gender, #id_preferred_job_location{
+    list-style-type: none;
+    display: inline-flex;
+}
+
+#id_gender > li{
+    padding-right: 10px;
+}
+
+#id_preferred_job_location > li{
+    padding-right: 10px;
+}

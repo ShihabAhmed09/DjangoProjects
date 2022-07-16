@@ -1,0 +1,51 @@
+{% extends 'jobs/main.html' %}
+
+{% block body %}
+
+<br>
+<div class="row my-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card p-4">
+        <h1>Candidates applied</h1>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Date of Birth</th>
+                    <th>Resume</th>
+                    <th>Gender</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                </tr>
+                {% for candidate in candidates %}
+                <tr>
+                    <td>{{candidate.name}}</td>
+                    <td>{{candidate.dob}}</td>
+                    {% if candidate.resume %}
+                        <td>
+                            <a href="{{ candidate.resume.url }}" class="text-decoration-none">{{ candidate.resume }}</a>
+                        </td>
+                    {% else %}
+                    <td>Not submitted</td>
+                    {% endif %}
+                    <td>{{candidate.gender}}</td>
+                    <td>{{candidate.mobile}}</td>
+                    <td>{{candidate.email}}</td>
+                    <td>{{candidate.position}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

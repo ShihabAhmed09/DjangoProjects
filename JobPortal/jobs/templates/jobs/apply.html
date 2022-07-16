@@ -1,0 +1,22 @@
+{% extends 'jobs/main.html' %}
+{% load crispy_forms_tags %}
+{% block body %}
+
+<br>
+<div class="row my-4 justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header alert alert-info text-center">
+                <h3>Apply for the job</h3>
+            </div>
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data" action=""> {% csrf_token %}
+                    {{ form|crispy }}
+                    <input class="btn btn-info mt-2" type="submit" value="Add">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

@@ -1,0 +1,32 @@
+body {
+    background-color: #f5f5f5;
+}
+
+.bg-dark {
+    background-color: #4f868c!important;
+}
+
+#total-orders {
+    background-color: #4cb4c7;
+}
+
+#orders-delivered {
+    background-color: #7abecc;
+}
+
+#orders-pending {
+    background-color: #7CD1C0;
+}
+
+.hello-msg {
+    font-size: 18px;
+    margin-right: 20px;
+    color: #fff;
+}
+
+.profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+}

@@ -1,0 +1,25 @@
+{% extends 'blog/base.html' %}
+
+{% block css %} {% endblock css %}
+
+{% block contactactive %} active {% endblock contactactive %}
+
+{% block body %}
+<h3> Contact Tech Diary Admin </h3>
+<form method="post"> {% csrf_token %}
+    {% for item in form %}
+        <div class="form-group mb-3">
+            {{ item.label_tag }} {{ item }}
+            <small class="text-danger">{{ item.errors|striptags }}</small>
+        </div>
+    {% endfor %}
+    <button type="submit" class="btn btn-primary mb-3">Submit</button>
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="alert alert-danger my-3">{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+</form>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

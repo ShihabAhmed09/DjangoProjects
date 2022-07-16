@@ -1,0 +1,48 @@
+{% extends 'jobs/main.html' %}
+
+{% block body %}
+
+<br>
+<div class="row my-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card p-4">
+        <h1>Available Jobs</h1>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Company Name</th>
+                    <th>Position</th>
+                    <th>Description</th>
+                    <th>Salary</th>
+                    <th>Experience</th>
+                    <th>Location</th>
+                    <th>Join</th>
+                </tr>
+                {% for job in job_post %}
+                <tr>
+                    <td>{{job.name}}</td>
+                    <td>{{job.position}}</td>
+                    <td>{{job.description}}</td>
+                    <td>{{job.salary}}</td>
+                    <td>{{job.experience}}</td>
+                    <td>{{job.location}}</td>
+                    <td>
+                        <a href="{% url 'apply' job.name job.position %}" class="btn btn-info btn-sm"
+                           type="submit">Apply</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

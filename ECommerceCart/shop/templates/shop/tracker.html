@@ -1,0 +1,118 @@
+{% extends 'shop/basic.html' %}
+
+{% block title %} Order Tracker - My Awesome Cart {% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="col my-4">
+        <h3>Enter your Order ID and Email Address to track your order. </h3>
+        <form class="row g-3" id="trackerForm" action="#" method="post"> {% csrf_token %}
+            <div class="col-md-6">
+                <label for="order_id" class="form-label">Order Id</label>
+                <input type="text" class="form-control" id="order_id" name="order_id" placeholder="Order Id">
+            </div>
+            <div class="col-md-6">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Track Order</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="col my-4">
+        <h3>Your Order Status</h3>
+        <div class="my-4">
+            <ul class="list-group" id="order_stat">
+                Enter your Order Id and Email and click track Order to find your order status.
+            </ul>
+        </div>
+    </div>
+
+    <div class="col my-4" id="order_details">
+        
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script>
+    $('#trackerForm').submit(function(event){
+        $('#order_stat').empty();  // Empty order status part if something loaded previously
+
+        // Preparing Form Data
+        var formData = {
+            'order_id': $('input[name=order_id').val(),
+            'email': $('input[name=email').val(),
+            'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken').val()
+        };
+
+        // Process form using ajax
+        $.ajax({
+            type: 'POST',
+            url: '/shop/tracker/',
+            data: formData,
+            encode: true
+        })
+        .done(function(data){
+            // console.log(data)  // data is data sent by views.py
+            $('#order_details').empty();
+            data = JSON.parse(data);
+            // console.log(data);
+            if (data['status'] == 'success'){
+                updates = data['updates'];
+                // console.log(updates);
+                for (i=0; i<updates.length; i++){
+                    let text = updates[i]['text'];
+                    let time = updates[i]['time'];
+                    myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${text}
+                                <span class="badge bg-primary rounded-pill">${time}</span>
+                            </li>`  // `` and ${} used in ES6
+                    $('#order_stat').append(myStr);  // used jQuery (can use .innerHTML)
+                }
+
+                // Fill in the order details
+                cart = JSON.parse(data['items_json']);
+                var total_price = 0;
+                detail = `<h3>Your Order Details</h3>
+                        <div class="my-4">
+                            <ul class="list-group" id="order_list">
+                                        
+                            </ul>
+                        </div>
+                        <div class="shadow-none p-3 mb-5 bg-light rounded mt-3" id="show_price">
+                            <b>Total Price is <span id="totalPrice"></span> Tk.</b> Thanks for using My Awesome Cart!!
+                        </div>`
+                $('#order_details').append(detail);
+                for (var item in cart){
+                    let name = cart[item][1];
+                    let quantity = cart[item][0];
+                    let price = cart[item][2];
+                    total_price = total_price + quantity*price;
+                    myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                                ${name}
+                                <span>${price} Tk.</span>
+                                <span class="badge bg-primary rounded-pill">${quantity}</span>
+                            </li>`  // `` and ${} used in ES6
+                    $('#order_list').append(myStr);  // used jQuery (can use .innerHTML)
+                }
+                $('#totalPrice').append(total_price);  
+            }
+            else{
+                myStr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                            Sorry, We are not able to track your order using this order id and email. Please make sure you typed the correct order id and email.
+                        </li>`
+                $('#order_stat').append(myStr);
+            }
+        });
+
+        event.preventDefault();  // prevents forms default behaviour of reloading
+    });
+</script>
+
+{% endblock %}

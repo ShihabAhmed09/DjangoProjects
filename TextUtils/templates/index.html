@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+    <title>TextUtils</title>
+    <style>
+		.footer {
+   		position: fixed;
+   		left: 0;
+   		bottom: 0;
+   		width: 100%;
+   		background-color: black;
+   		color: white;
+   		text-align: center;
+   		display: block;
+		}
+	</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">TextUtils.bd</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <form class="d-flex mx-2">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+</nav>
+
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Welcome To TextUtils!</strong> Do anything with your text here and see the magic.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+<div class="container">
+    <form action='/analyze/' method='post'> {% csrf_token %}
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1" class="form-label">Enter your text here and see what
+                happens</label>
+            <textarea name='text' class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
+            <!-- Character Counter -->
+            <p><span id="characterCount">0</span> Characters</p>
+        </div>
+
+        <div class="form-check form-switch mt-2">
+            <input name='remove_punctuation' class="form-check-input" type="checkbox" id="flexSwitchCheckDefault1">
+            <label class="form-check-label" for="flexSwitchCheckDefault1">Remove Punctuation</label>
+        </div>
+        <div class="form-check form-switch">
+            <input name='uppercase' class="form-check-input" type="checkbox" id="flexSwitchCheckDefault2">
+            <label class="form-check-label" for="flexSwitchCheckDefault2">UPPERCASE</label>
+        </div>
+        <div class="form-check form-switch">
+            <input name='newline_remover' class="form-check-input" type="checkbox" id="flexSwitchCheckDefault3">
+            <label class="form-check-label" for="flexSwitchCheckDefault3">Remove Newline</label>
+        </div>
+        <div class="form-check form-switch">
+            <input name='extra_space_remover' class="form-check-input" type="checkbox" id="flexSwitchCheckDefault4">
+            <label class="form-check-label" for="flexSwitchCheckDefault4">Remove Extra Space</label>
+        </div>
+        <div class="form-check form-switch">
+            <input name='number_remover' class="form-check-input" type="checkbox" id="flexSwitchCheckDefault6">
+            <label class="form-check-label" for="flexSwitchCheckDefault6">Remove Number</label>
+        </div>
+
+        <button type="submit" class="btn btn-dark mt-4 mb-4">Analyze Text</button>
+    </form>
+
+    {% load static %}
+    <a href="{% static 'shop/static.txt' %}" class="btn btn-primary mt-4">Click Me</a>
+</div>
+
+<!-- Footer-->
+<footer class="footer">
+    <div class="container">
+        <span class="text-light">&#169 2021 Textutils.bd </span>
+    </div>
+</footer>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
+
+</body>
+
+<script type="text/javascript">
+    var exampleFormControlTextarea1 = document.getElementById("exampleFormControlTextarea1");
+	var characterCount = document.getElementById("characterCount");
+
+	exampleFormControlTextarea1.addEventListener("keyup",function(){
+	    var characters = exampleFormControlTextarea1.value.split('');
+  	    characterCount.innerText = characters.length;
+	});
+</script>
+</html>

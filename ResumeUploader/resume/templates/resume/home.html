@@ -1,0 +1,116 @@
+{% extends 'resume/base.html' %}
+
+{% block title %} Resume Uploader {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<div class="container border rounded shadow-sm bg-light p-4 my-4">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row">
+        <h2 class="text-center border rounded bg-secondary p-2 mb-4">Upload Resume</h2>
+        {% if user.is_authenticated %}
+        <div class="col-md-8">
+        {% else %}
+        <div class="col-md-10 offset-md-1">
+        {% endif %}
+            <form method="post" enctype="multipart/form-data" class="shadow p-4" autocomplete="off">  {% csrf_token %}
+                <div class="form-group mb-3">
+                    {{ form.name.label_tag }} {{ form.name }}
+                    <small class="text-danger">{{ form.name.errors|striptags }}</small>
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-md-6">
+                        {{ form.date_of_birth.label_tag }} {{ form.date_of_birth }}
+                        <small class="text-danger">{{ form.date_of_birth.errors|striptags }}</small>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.mobile.label_tag }} {{ form.mobile }}
+                        <small class="text-danger">{{ form.mobile.errors|striptags }}</small>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.gender.label_tag }} {{ form.gender }}
+                    <small class="text-danger">{{ form.gender.errors|striptags }}</small>
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-md-6">
+                        {{ form.locality.label_tag }} {{ form.locality }}
+                        <small class="text-danger">{{ form.locality.errors|striptags }}</small>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.city.label_tag }} {{ form.city }}
+                        <small class="text-danger">{{ form.city.errors|striptags }}</small>
+                    </div>
+                </div>
+                <div class="row form-group mb-3">
+                    <div class="col-md-6">
+                        {{ form.division.label_tag }} {{ form.division }}
+                        <small class="text-danger">{{ form.division.errors|striptags }}</small>
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.zip_code.label_tag }} {{ form.zip_code }}
+                        <small class="text-danger">{{ form.zip_code.errors|striptags }}</small>
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.email.label_tag }} {{ form.email }}
+                    <small class="text-danger">{{ form.email.errors|striptags }}</small>
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.preferred_job_location.label_tag }} {{ form.preferred_job_location }}
+                    <small class="text-danger">{{ form.preferred_job_location.errors|striptags }}</small>
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.profile_pic.label_tag }} {{ form.profile_pic }}
+                    <small class="text-danger">{{ form.profile_pic.errors|striptags }}</small>
+                </div>
+                <div class="form-group mb-3">
+                    {{ form.resume_file.label_tag }} {{ form.resume_file }}
+                    <small class="text-danger">{{ form.resume_file.errors|striptags }}</small>
+                </div>
+                <button type="submit" class="btn btn-outline-primary mt-4">Upload</button>
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <p class="alert alert-danger my-3">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </form>
+        {% if user.is_authenticated %}
+        </div>
+        {% else %}
+        </div>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+        <div class="col-md-4">
+            <fieldset class="form-group shadow p-4">
+                <legend><h3 class="text-center text-success">List of Candidates</h3></legend>
+                <hr class="mb-4">
+                <ul class="list-group mb-3">
+                    {% for candidate in candidates %}
+                        <li class="list-group-item d-flex justify-content-between lh-sm">
+                            <div>
+                                <a href="{% url 'resume:candidate-view' candidate.name %}" class="text-decoration-none">
+                                    <h6 class="my-0">{{ candidate.name }}</h6>
+                                </a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </fieldset>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

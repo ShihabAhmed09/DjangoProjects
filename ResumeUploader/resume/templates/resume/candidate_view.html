@@ -1,0 +1,35 @@
+{% extends 'resume/base.html' %}
+
+{% block title %} Resume Uploader - {{ candidate.name }} {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+{% load myfilter %}
+<div class="container p-4 my-4">
+    <div class="row">
+        <h3 class="text-center bg-secondary border rounded shadow p-3 mb-4 col-md-10 offset-md-1">Candidate Details</h3>
+        <div class="col-md-10 shadow p-4 offset-md-1">
+            <h3 class="text-center text-primary mb-4">Resume</h3>
+            <p>Application No: {{ candidate.id }}</p>
+            <img src="{{ candidate.profile_pic.url }}" class="img-fluid img-thumbnail mt-2 float-end" alt=""
+                 width="200" height="200">
+            <p>Name: {{ candidate.name }}</p>
+            <p>Date of Birth: {{ candidate.date_of_birth }}</p>
+            <p>Gender: {{ candidate.gender }}</p>
+            <p>Address: {{ candidate.locality }}, {{ candidate.city }}, {{ candidate.division }} -
+                {{ candidate.zip_code }}</p>
+            <p>mobile Number: {{ candidate.mobile }}</p>
+            <p>Email Address: {{ candidate.email }}</p>
+            <p>Preferred Job Location: {{ candidate.preferred_job_location|remove_chars:"[]'" }}</p>
+            <p>Attachment: <a href="{{ candidate.resume_file.url }}" class="text-decoration-none">Download resume</a>
+            </p>
+            <div class="text-center">
+                <a href="{% url 'resume:home' %}" class="btn btn-outline-primary">Back To Home</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

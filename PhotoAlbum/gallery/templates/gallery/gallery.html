@@ -1,0 +1,51 @@
+{% extends 'gallery/base.html' %}
+
+{% block title %} Gallery {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    <a href="{% url 'gallery:gallery' %}" class="text-decoration-none text-dark">All</a>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% for category in categories %}
+                    <li class="list-group-item">
+                        <a href="{% url 'gallery:gallery' %}?category={{ category.name }}"
+                           class="text-decoration-none text-dark">{{ category.name }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    <a href="{% url 'gallery:add-photo' %}" class="btn btn-dark btn-block m-1">Add Photo</a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                {% for photo in photos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ photo.image.url }}" class="card-img-top" alt="Image" height="300px">
+                        <div class="card-body">
+                            <p class="card-text">Category: {{ photo.category }}</p>
+                        </div>
+                        <a href="{% url 'gallery:photo-view' photo.id %}" class="btn btn-outline-dark btn-block m-1">
+                            View Photo
+                        </a>
+                    </div>
+                </div>
+                {% empty %}
+                <h2 class="text-white">No Photos</h2>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}
