@@ -1,0 +1,351 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+{% load static %}
+{% load humanize %}
+
+<main id="main">
+    <section id="post-details" class="post-details">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8 post-content-wrapper">
+                    <div>
+                        <a href="{% url 'blog-home' %}" class="btn-back btn-sm">&laquo; Back to Posts</a>
+                    </div>
+
+                    <img src="{% static 'media/blog/thumbnails/todo.PNG' %}" class="post-thumbnail">
+
+                    <div>
+                        {% for category in post.categories.all %}
+                        <span class="category">{{ category }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <hr>
+
+                    <h1 class="post-title">{{ post.title }}</h1>
+
+                    <div class="post-author">
+                        <img class="author-pic" src="{% static 'img/profile-image.jpg' %}">
+                        <div>
+                            <p class="author-name">{{ post.author|upper }}</p>
+                            <p class="post-date">Posted: {{ post.created|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+
+                    <p>First Create a project:</p>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">
+                        django-admin&nbsp;startproject todoApp
+                    </div>
+                    <br>
+
+                    <p>Inside the project, Create an app called main_app:</p>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">
+                        python manage.py startapp main_app
+                    </div>
+                    <br>
+
+                    <p>Now in <u><strong>settings.py</strong></u>, configure the followings:</p>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">
+                        import os<br>
+                        from django.contrib.messages import constants as messages<br>
+                    </div>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">INSTALLED_APPS = [<br/>
+                        &nbsp;&nbsp;&nbsp; &#39;main_app.apps.MainAppConfig&#39;,<br/>
+                        ]
+                    </div>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">DATABASES = {<br/>
+                        &nbsp;&nbsp;&nbsp; &#39;default&#39;: {<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;ENGINE&#39;: &#39;django.db.backends.postgresql&#39;,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;NAME&#39;: &#39;Your Postgrase database name&#39;,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;USER&#39;: &#39;postgres&#39;,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;PASSWORD&#39;: &#39;Your postgres password&#39;,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;HOST&#39;: &#39;localhost&#39;,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;PORT&#39;: &#39;5432&#39;<br/>
+                        &nbsp;&nbsp;&nbsp; }<br/>
+                        }
+                    </div>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">STATICFILES_DIRS =
+                        [<br/>
+                        &nbsp;&nbsp;&nbsp; BASE_DIR / &quot;static&quot;,<br/>
+                        ]
+                    </div>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">MESSAGE_TAGS = {<br/>
+                        &nbsp;&nbsp;&nbsp; messages.ERROR: &#39;danger&#39;,<br/>
+                        }
+                    </div>
+                    <br>
+
+                    <p>Now Configure todoApp&nbsp;<u><strong>urls.py</strong></u>:</p>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django.contrib
+                        import admin<br/>
+                        from django.urls import path, include
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">urlpatterns = [<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;admin/&#39;, admin.site.urls),<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;&#39;, include(&#39;main_app.urls&#39;)),<br/>
+                        ]
+                    </div>
+                    <br>
+
+                    <p>Configure main_app <u><strong>urls.py</strong></u>:</p>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django.urls import
+                        path, include<br/>
+                        from . import views
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">app_name = &#39;main_app&#39;<br/>
+                        urlpatterns = [<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;&#39;, views.home, name=&#39;home&#39;),<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;task/&lt;int:pk&gt;/update/&#39;, views.update_task, name=&#39;update-task&#39;),<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;task/&lt;int:pk&gt;/delete/&#39;, views.delete_task, name=&#39;delete-task&#39;),<br/>
+                        &nbsp;&nbsp;&nbsp; path(&#39;search/&#39;, views.search_task, name=&#39;search-task&#39;),<br/>
+                        ]
+                    </div>
+                    <br>
+
+                    <h4><strong><u>models.py:</u></strong></h4>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django.db import
+                        models<br/>
+                        from django.utils import timezone
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">class
+                        Task(models.Model):<br/>
+                        &nbsp;&nbsp;&nbsp; name = models.CharField(max_length=200)<br/>
+                        &nbsp;&nbsp;&nbsp; start_time = models.DateTimeField(default=timezone.now)<br/>
+                        &nbsp;&nbsp;&nbsp; completed = models.BooleanField(default=False)
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp; def
+                        __str__(self):<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return self.name
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp; class
+                        Meta:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ordering = [&#39;-start_time&#39;]
+                    </div>
+                    <br>
+
+                    <h4><u><strong>forms.py:</strong></u></h4>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django import forms<br/>
+                        from .models import Task
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">class
+                        TaskCreateForm(forms.ModelForm):<br/>
+                        &nbsp;&nbsp;&nbsp; class Meta:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model = Task<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fields = [&#39;name&#39;]<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; widgets = {<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;name&#39;:
+                        forms.TextInput(attrs={&#39;class&#39;: &#39;form-control&#39;, &#39;placeholder&#39;: &#39;Add
+                        task here...&#39;}),<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">class
+                        TaskUpdateForm(forms.ModelForm):<br/>
+                        &nbsp;&nbsp;&nbsp; class Meta:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; model = Task<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fields = [&#39;name&#39;, &#39;completed&#39;]<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; labels = {&#39;completed&#39;: &#39;Mark as completed&#39;}<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; widgets = {<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;name&#39;:
+                        forms.TextInput(attrs={&#39;class&#39;: &#39;form-control&#39;, &#39;placeholder&#39;: &#39;Add
+                        task here...&#39;})<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }
+                    </div>
+                    <br>
+
+                    <h4><strong><u>admin.py:</u></strong></h4>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django.contrib
+                        import admin<br/>
+                        from .models import Task
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">
+                        @admin.register(Task)<br/>
+                        class TaskAdmin(admin.ModelAdmin):<br/>
+                        &nbsp;&nbsp;&nbsp; list_display = [&#39;id&#39;, &#39;name&#39;, &#39;start_time&#39;, &#39;completed&#39;]
+                    </div>
+                    <br>
+
+                    <h4><u><strong>views.py:</strong></u></h4>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">from django.shortcuts
+                        import render, redirect<br/>
+                        from django.contrib import messages<br/>
+                        from .forms import TaskCreateForm, TaskUpdateForm<br/>
+                        from .models import Task<br/>
+                        from django.db.models import Q
+                    </div>
+                    <br>
+
+                    <h3><u><strong>Create and Read View:&nbsp;</strong></u></h3>
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">def home(request):<br/>
+                        &nbsp;&nbsp;&nbsp; if request.method == &#39;POST&#39;:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form = TaskCreateForm(request.POST, label_suffix=&#39;&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if form.is_valid():<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form.save()<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; messages.success(request, f&#39;Task
+                        Added Successfully&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return redirect(&#39;main_app:home&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; else:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form = TaskCreateForm(label_suffix=&#39;&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; tasks = Task.objects.all()
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp;
+                        task_left = tasks.filter(completed=&#39;False&#39;).count()<br/>
+                        &nbsp;&nbsp;&nbsp; task_completed = tasks.filter(completed=&#39;True&#39;).count()
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp;
+                        context = {&#39;form&#39;: form, &#39;tasks&#39;: tasks, &#39;task_left&#39;: task_left, &#39;task_completed&#39;:
+                        task_completed}<br/>
+                        &nbsp;&nbsp;&nbsp; return render(request, &#39;main_app/home.html&#39;, context)
+                    </div>
+                    <br>
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo.PNG' %}"
+                            style="height:100%; width:100%"/>&nbsp;</p>
+
+                    <h3><u><strong>Update View:</strong></u></h3>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">def update_task(request,
+                        pk):<br/>
+                        &nbsp;&nbsp;&nbsp; task = Task.objects.get(pk=pk)<br/>
+                        &nbsp;&nbsp;&nbsp; if request.method == &#39;POST&#39;:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form = TaskUpdateForm(request.POST, instance=task,
+                        label_suffix=&#39;&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if form.is_valid():<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form.save()<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; messages.success(request, f&#39;Task
+                        Updated Successfully&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return redirect(&#39;main_app:home&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; else:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; form = TaskUpdateForm(instance=task, label_suffix=&#39;&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; context = {&#39;form&#39;: form}<br/>
+                        &nbsp;&nbsp;&nbsp; return render(request, &#39;main_app/update_task.html&#39;, context)
+                    </div>
+                    <br>
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_update.PNG' %}"
+                            style="height:100%; width:100%"/>&nbsp;</p>
+
+                    <h3><strong><u>Delete View:</u></strong></h3>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">def delete_task(request,
+                        pk):<br/>
+                        &nbsp;&nbsp;&nbsp; task = Task.objects.get(pk=pk)<br/>
+                        &nbsp;&nbsp;&nbsp; if request.method == &#39;POST&#39;:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; task.delete()<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; messages.success(request, &quot;Task
+                        deleted&quot;)<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return redirect(&#39;main_app:home&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; context = {&#39;task&#39;: task}<br/>
+                        &nbsp;&nbsp;&nbsp; return render(request, &#39;main_app/delete_task.html&#39;, context)
+                    </div>
+                    <br>
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_delete.PNG' %}"
+                            style="height:100%; width:100%"/>&nbsp;</p>
+
+                    <h3><u><strong>Search View:</strong></u></h3>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">def
+                        search_task(request):<br/>
+                        &nbsp;&nbsp;&nbsp; query = request.GET.get(&#39;q&#39;)<br/>
+                        &nbsp;&nbsp;&nbsp; query = query.strip()<br/>
+                        &nbsp;&nbsp;&nbsp; if query:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tasks = Task.objects.filter(Q(name__icontains=query))<br/>
+                        &nbsp;&nbsp;&nbsp; else:<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; tasks = Task.objects.none()
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp;
+                        task_left = tasks.filter(completed=&#39;False&#39;).count()<br/>
+                        &nbsp;&nbsp;&nbsp; task_completed = tasks.filter(completed=&#39;True&#39;).count()
+                    </div>
+
+                    <div style="background:#eeeeee; border:1px solid #cccccc; padding:5px 10px">&nbsp;&nbsp;&nbsp;
+                        context = {&#39;tasks&#39;: tasks, &#39;query&#39;: query, &#39;query_length&#39;: len(query),
+                        &#39;task_left&#39;: task_left,<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &#39;task_completed&#39;:
+                        task_completed}<br/>
+                        &nbsp;&nbsp;&nbsp; return render(request, &#39;main_app/search_task.html&#39;, context)
+                    </div>
+                    <br>
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_search.PNG' %}"
+                            style="height:100%; width:100%"/>
+
+                    <div class="comment-section">
+                        <div class="row">
+                            <h2>Conversation{{ post.postcomment_set.all.count|pluralize }}
+                                ({{ post.postcomment_set.all.count }})</h2>
+
+                            <hr class="mb-4">
+                            <form action="" method="post" class="mb-4"> {% csrf_token %}
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="name" name="name"
+                                           placeholder="Enter name" required>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <input type="text" class="form-control" id="comment" name="comment"
+                                           placeholder="Leave a comment..." required>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary btn-sm">
+                                    Post Comment
+                                </button>
+                            </form>
+                            <hr>
+
+                            {% for comment in post.postcomment_set.all %}
+                            <div class="comment">
+                                <img class="author-pic" src="{% static 'img/default.jpg' %}">
+                                <div>
+                                    <p class="comment-author">
+                                        {{ comment.author }}: {{ comment.created|naturaltime }}</p>
+                                    <p class="comment-body">{{ comment.comment }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-3 right-side-wrapper">
+                    <div class="featured-posts">
+                        <h4 style="font-weight: 600;"> Featured Posts</h4>
+                        <hr>
+                        {% for post in posts %}
+                        <div class="sidebar-item">
+                            <a href="{% url 'post-details' post.slug %}">
+                                {% if post.slug == 'to-do-app-django' %}
+                                <img src="{% static 'media/blog/thumbnails/todo.PNG' %}">
+                                {% elif post.slug == 'best-videos-for-learning-python' %}
+                                <img src="{% static 'media/blog/thumbnails/Python-logo-notext.png' %}">
+                                {% elif post.slug == 'the-best-programming-podcasts' %}
+                                <img src="{% static 'media/blog/thumbnails/image-20160712-9264-zt66ib.jpg' %}">
+                                {% endif %}
+
+                                <div class="sidebar-item-body">
+                                    <strong>{{ post.title }}</strong>
+                                    <p>{{ post.sub_heading }}</p>
+                                </div>
+                            </a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock body %}

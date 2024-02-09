@@ -1,0 +1,160 @@
+{% extends 'base/base.html' %}
+{% block aboutactive %} active {% endblock aboutactive %}
+
+{% block body %}
+{% load static %}
+<main id="main">
+    <!-- ======= About Section ======= -->
+    <section id="about" class="about">
+        <div class="container" data-aos="zoom-in" data-aos-delay="100">
+
+            <div class="section-title">
+                <h2>About</h2>
+                <p>I'm a Back-End Developer located in Sylhet, Bangladesh.</p>
+                <p>Well-organised person, problem solver.</p>
+                <p>Fan of English movie and TV series.</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4">
+                    <img src="{% static 'img/Shihab.jpg' %}" class="img-fluid" alt="">
+                </div>
+                <div class="col-lg-8 pt-4 pt-lg-0 content">
+                    <h3>Web Developer (Backend Developer / Django Expert)</h3>
+                    <p class="fst-italic">
+                        Well-organised person and passionate problem solver with 2+ years of experience in Python and
+                        6+ months of experience in Back-End Development using Django.
+                    </p>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Name:</strong>
+                                    <span>Shihab Ahmed</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>22</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Phone:</strong>
+                                    <span>+880 1772 432557</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>City:</strong>
+                                    <span>Sylhet, Bangladesh</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-lg-6">
+                            <ul>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Birthday:</strong>
+                                    <span>25 September 1998</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong>
+                                    <span>B.Sc. Engineering in ICT</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong>
+                                    <span>shihab.ict.cou@gmail.com</span></li>
+                                <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong>
+                                    <span>Available</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <p>Visit my <a href="https://linkedin.com/in/shihab-ahmed-7861b5138" class="linkedin"
+                                   target="_blank">LinkedIn</a> profile for more details or just
+                        <a href="{% url 'base:contact' %}">contact</a> me.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ======= Education Section ======= -->
+    <section id="education" class="education">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Education</h2>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="education-item">
+                        <h4>Masters of Sciences (Engg.) in Information and Communication Technology</h4>
+                        <h5>2019 - 2020</h5>
+                        <p><em>Comilla University, Cumilla, Bangladesh</em></p>
+                        <p>Result: CGPA /4.00</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Bachelor of Sciences (Engg.) in Information and Communication Technology</h4>
+                        <h5>2015 - 2019</h5>
+                        <p><em>Comilla University, Cumilla, Bangladesh</em></p>
+                        <p>Result: CGPA 3.79/4.00</p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="education-item">
+                        <h4>Higher Secondary Certificate (HSC)</h4>
+                        <h5>2013 - 2015</h5>
+                        <p><em>Urea Sar Karkhana College, Narsingdi, Dhaka</em></p>
+                        <p>Result: GPA 4.92/5.00</p>
+                    </div>
+                    <div class="education-item">
+                        <h4>Secondary School Certificate (SSC)</h4>
+                        <h5>2002 - 2013</h5>
+                        <p><em>Palash Sar Karkhana High School, Narsingdi, Dhaka</em></p>
+                        <p>Result: GPA 5.00/5.00</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ======= Skills Section ======= -->
+    <section id="skills" class="skills">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Skills</h2>
+            </div>
+
+            <div class="row skills-content">
+                {% for skill in skills %}
+                    <div class="col-lg-6">
+                        <div class="progress">
+                            <span class="skill">{{ skill.name }} <i class="val">{{ skill.knowledge }}%</i></span>
+                            <div class="progress-bar-wrap">
+                                <div class="progress-bar" role="progressbar" style="width: {{ skill.knowledge }}%" aria-valuenow="{{ skill.knowledge }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ======= Certificates Section ======= -->
+    <section id="certificates" class="certificates">
+        <div class="container" data-aos="fade-up">
+
+            <div class="section-title">
+                <h2>Certificates</h2>
+            </div>
+
+            <div class="row mb-3">
+                {% for certificate in certificates %}
+                <div class="col-lg-6">
+                    <div class="certificate-item pb-0">
+                        <h4>{{ certificate.name }}</h4>
+                        <p><strong>Issuing organization:</strong> {{ certificate.organization }}</p>
+                        <p><strong>Credential URL:</strong> <a href="{{ certificate.url }}" target="_blank">
+                            View Certificate</a></p>
+                    </div>
+                </div>
+                {% if forloop.counter|divisibleby:2 %}
+            </div>
+            <div class="row mb-3">
+                {% endif %}
+                {% endfor %}
+            </div>
+
+        </div>
+    </section>
+</main>
+
+{% endblock body %}

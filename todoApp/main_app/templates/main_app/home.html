@@ -1,0 +1,109 @@
+{% extends 'main_app/base.html' %}
+
+{% block title %} ToDo App {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<div class="container p-4 my-4">
+    <div class="row">
+        <div class="col-md-10 shadow offset-md-1">
+            <div class="row">
+                <div class="col-md-3 p-4 bg-light">
+                    <div class="sidebar rounded">
+                        <div class="mb-4">
+                            <a href="{% url 'main_app:home' %}" class="btn btn-secondary"><i class="fas fa-home"></i></a>
+                        </div>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between lh-sm text-success">
+                                <div>
+                                    <h6 class="my-0">Total Tasks:</h6>
+                                </div>
+                                <span class="badge bg-success rounded-pill">{{ tasks.count }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-sm text-success">
+                                <div>
+                                    <h6 class="my-0">Tasks Completed:</h6>
+                                </div>
+                                <span class="badge bg-success rounded-pill">{{ task_completed }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-sm text-success">
+                                <div>
+                                    <h6 class="my-0">Tasks Left:</h6>
+                                </div>
+                                <span class="badge bg-success rounded-pill">{{ task_left }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9 p-4">
+                    <fieldset class="form-group mb-4 p-4">
+                        <legend class="border-bottom"><h2 class="text-center text-success mb-4">ToDo Application</h2>
+                        </legend>
+                    </fieldset>
+                    <form method="post" class="px-4"> {% csrf_token %}
+                        <div class="row mb-4">
+                            <div class="input-group">
+                                {{ form.name }}
+                                <button type="submit" class="btn btn-outline-primary"><i class="fas fa-plus me-2"></i>
+                                    Add Task
+                                </button>
+                                <small class="text-danger">{{ form.name.errors|striptags }}</small>
+                            </div>
+                        </div>
+                        {% if form.non_field_errors %}
+                            {% for error in form.non_field_errors %}
+                                <p class="alert alert-danger my-3">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
+                    </form>
+                    <form method="get" action="" class="px-4">
+                        <div class="row mb-4">
+                            <div class="input-group">
+                                <input class="form-control" id="query" name="q" type="search" aria-label="Search"
+                                       value="{{ request.GET.q }}" placeholder="Search task">
+                                <button class="btn btn-outline-success" type="submit">
+                                    <i class="fas fa-search me-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    {% for task in tasks %}
+                    <div class="card col-md-10 shadow p-4 offset-md-1 mt-4">
+                        <div class="row">
+                            <div class="col-md-10">
+                                <p class="card-text">
+                                    {% if task.completed %}
+                                    <i class="fas fa-check-circle"></i>
+                                    {% else %}
+                                    <i class="fas fa-clock"></i>
+                                    {% endif %}
+                                    {{ task.name }}
+                                </p>
+                                <p class="card-text"><i class="fas fa-calendar-alt me-2"></i>{{ task.start_time }}</p>
+                                <p class="card-text"></p>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="{% url 'main_app:update-task' task.id %}"
+                                   class="btn btn-primary btn-sm me-2 {% if task.completed %}disabled{% endif %}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="{% url 'main_app:delete-task' task.id %}" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="p-4">
+                        <p class="alert alert-warning text-center">No tasks found.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

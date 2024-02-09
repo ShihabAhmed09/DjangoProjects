@@ -1,0 +1,75 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+{% load static %}
+
+<main id="main">
+    <section id="project-details" class="project-details">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8 border rounded shadow-sm p-4">
+                    <div>
+                        <a href="{% url 'projects' %}" class="btn-back btn-sm">&laquo; Back to Projects</a>
+                    </div>
+
+                    <img src="{% static 'media/projects/thumbnails/todo.PNG' %}" class="project-thumbnail">
+
+                    <div>
+                        {% for tag in project.tags.all %}
+                            <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <hr>
+
+                    <h1 class="project-title">{{ project.title }}</h1>
+
+                    <div class="project-author">
+                        <img class="author-pic" src="{% static 'img/profile-image.jpg' %}">
+                        <div>
+                            <p class="author-name">Shihab Ahmed</p>
+                            <p class="post-date">Posted: {{ project.created|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+
+                    <p>It is the best way to learn Django CRUD&nbsp;operation by creating a todo App.</p>
+                    <p>Here We can apply Create, Read, Update, Delete operation. Also search operation which is a bit
+                        advance task.</p>
+                    <p>&nbsp;</p>
+
+                    <h3>Github Link:&nbsp;<a href="https://github.com/ShihabAhmed09/ToDo-App" target="_blank">Go to
+                        Github to view source code</a></h3>
+
+                    <h3>&nbsp;</h3>
+
+                    <h2><strong>Create&nbsp;and Read&nbsp;View:</strong></h2>
+
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo.PNG' %}" style="height:100%; width:100%"/></p>
+
+                    <p>&nbsp;</p>
+
+                    <h2><strong>Update View:</strong></h2>
+
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_update.PNG' %}" style="height:100%; width:100%"/></p>
+
+                    <p>&nbsp;</p>
+
+                    <h2><strong>Delete View:</strong></h2>
+
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_delete.PNG' %}" style="height:100%; width:100%"/></p>
+
+                    <h2>&nbsp;</h2>
+
+                    <h2><strong>Search View:</strong></h2>
+
+                    <p><img alt="" src="{% static 'media/uploads/2021/08/18/todo_search.PNG' %}" style="height:100%; width:100%"/>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock body %}

@@ -1,0 +1,36 @@
+{% extends 'quiz/main.html' %}
+
+{% block body %}
+<br>
+<div class="row my-4 justify-content-center">
+    <div class="card p-4">
+        <h1 class="card-header alert alert-info text-center">Result of participated candidates</h1>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Name</th>
+                    <th>Quiz Taken</th>
+                    <th>Score</th>
+                    <th>Percentage</th>
+                    <th>Time Taken</th>
+                    <th>Correct answers</th>
+                    <th>Incorrect answers</th>
+                    <th>Total questions</th>
+                </tr>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.user }}</td>
+                    <td>{{ result.created }}</td>
+                    <td>{{ result.score }}</td>
+                    <td>{{ result.percentage|floatformat:2 }}%</td>
+                    <td>{{ result.time_taken }} seconds</td>
+                    <td>{{ result.correct }}</td>
+                    <td>{{ result.incorrect }}</td>
+                    <td>{{ result.total }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}

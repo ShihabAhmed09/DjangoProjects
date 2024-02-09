@@ -1,0 +1,41 @@
+{% extends 'quiz/main.html' %}
+
+{% block body %}
+<br>
+<div class="row my-4 justify-content-center">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="card p-4">
+        <h1 class="card-header alert alert-info text-center">Questions</h1>
+        <div class="card-body">
+            <table class="table table-hover">
+                <tr>
+                    <th>Question</th>
+                    <th>Option 1</th>
+                    <th>Option 2</th>
+                    <th>Option 3</th>
+                    <th>Option 4</th>
+                    <th>Answer</th>
+                </tr>
+                {% for question in questions %}
+                <tr>
+                    <td>{{ question.question }}</td>
+                    <td>{{ question.option_1 }}</td>
+                    <td>{{ question.option_2 }}</td>
+                    <td>{{ question.option_3 }}</td>
+                    <td>{{ question.option_4 }}</td>
+                    <td>{{ question.answer }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock body %}

@@ -1,0 +1,102 @@
+{% extends 'base/base.html' %}
+{% block contactactive %} active {% endblock contactactive %}
+
+{% block body %}
+{% load static %}
+
+<main id="main">
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="contact">
+        <div class="container" data-aos="zoom-in" data-aos-delay="100">
+
+            <div class="section-title">
+                <h2>Contact</h2>
+                <p>I'm interested in freelance opportunities. However, if you have other questions, don't hesitate to
+                    contact me through social media platform, email, mobile phone, or you can
+                    just simply use the form to contact me.
+                </p>
+            </div>
+
+            <div class="mb-4">
+                <iframe style="border:0; width: 100%; height: 270px;"
+                        src="https://maps.google.com/maps?hl=en&amp;q=Shahjala Uposhohor&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+                        frameborder="0" allowfullscreen></iframe>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-6 mt-4">
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="info-box">
+                                <i class="bx bx-share-alt"></i>
+                                <h3>Social Profiles</h3>
+                                <div class="social-links">
+                                    <a href="https://twitter.com/im_Shihab_Ahmed" class="twitter" target="_blank">
+                                        <i class="bi bi-twitter"></i></a>
+                                    <a href="https://www.facebook.com/ShihabAhmedApu/" class="facebook" target="_blank">
+                                        <i class="bi bi-facebook"></i></a>
+                                    <a href="https://www.instagram.com/shihab_ahmed09/" class="instagram" target="_blank">
+                                        <i class="bi bi-instagram"></i></a>
+                                    <a href="https://linkedin.com/in/shihab-ahmed-7861b5138" class="linkedin"
+                                       target="_blank"><i class="bi bi-linkedin"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-envelope"></i>
+                                <h3>Email Me</h3>
+                                <p>shihab.ict.cou@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-box mt-4">
+                                <i class="bx bx-phone-call"></i>
+                                <h3>Call Me</h3>
+                                <p>+880 1772 432557</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-lg-6 mt-4">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <form action="" method="post" class="contact-form">  {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-6 form-group ">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            {{ form.subject }}
+                        </div>
+                        <div class="form-group mt-3">
+                            {{ form.message }}
+                        </div>
+                        <div class="text-center my-3">
+                            <button type="submit" class="btn-contact">Send Message</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+</main>
+
+{% endblock body %}

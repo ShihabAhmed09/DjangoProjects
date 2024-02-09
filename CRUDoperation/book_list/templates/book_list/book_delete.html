@@ -1,0 +1,21 @@
+{% extends 'book_list/base.html' %}
+
+{% block title %} Book Corner - Delete Book {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<div class="col-md-8 border shadow-sm offset-md-2 p-4 my-4">
+    <form method="post" class="p-4"> {% csrf_token %}
+        <fieldset>
+            <h2 class="mb-4">Are you sure you want to delete the book "{{ book.name }}"?</h2>
+        </fieldset>
+        <div class="form-group mt-4">
+            <button type="submit" class="btn btn-danger me-2">Yes, Delete</button>
+            <a href="{% url 'book_list:home' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

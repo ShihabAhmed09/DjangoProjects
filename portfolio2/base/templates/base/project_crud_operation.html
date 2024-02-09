@@ -1,0 +1,50 @@
+{% extends 'base/base.html' %}
+
+{% block body %}
+{% load static %}
+
+<main id="main">
+    <section id="project-details" class="project-details">
+        <div class="container">
+            <div class="row justify-content-center">
+
+                <div class="col-lg-8 border rounded shadow-sm p-4">
+                    <div>
+                        <a href="{% url 'projects' %}" class="btn-back btn-sm">&laquo; Back to Projects</a>
+                    </div>
+
+
+                    <img src="{% static 'media/projects/thumbnails/CRUD.PNG' %}" class="project-thumbnail">
+
+                    <div>
+                        {% for tag in project.tags.all %}
+                            <span class="tag">{{ tag }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <hr>
+
+                    <h1 class="project-title">{{ project.title }}</h1>
+
+                    <div class="project-author">
+                        <img class="author-pic" src="{% static 'img/profile-image.jpg' %}">
+                        <div>
+                            <p class="author-name">Shihab Ahmed</p>
+                            <p class="post-date">Posted: {{ project.created|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+                    
+                    <p>A Simple Django App to learn CRUD operation.</p>
+
+                    <p>&nbsp;</p>
+
+                    <h3>Github Link:&nbsp;<a href="https://github.com/ShihabAhmed09/Django-CRUD-Operation"
+                                             target="_blank">Go to Github to view source code</a></h3>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</main>
+
+{% endblock body %}

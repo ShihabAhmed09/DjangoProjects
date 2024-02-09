@@ -1,0 +1,43 @@
+{% extends 'quiz/main.html' %}
+
+{% block body %}
+<br>
+<div class="row my-4 justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header alert alert-info text-center">
+                <h3>Welcome to Quiz Portal</h3>
+            </div>
+
+            <div class="card-body text-center">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.is_superuser %}
+                        <p class="fs-4 mb-4">Admins are not allowed to take part in quiz!!!
+                            <br>Rather you concentrate on adding more difficult questions and check others results!!!!
+                        </p>
+                    {% else %}
+                        <div align="right">
+                            <p class="fs-4 me-4">
+                                {% if high_score %}
+                                    <strong>Current High Score: {{ high_score.user }} -
+                                        {{ high_score.percentage|floatformat:2 }}%</strong>
+                                {% else %}
+                                    <strong>Current High Score: No one participated</strong>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <p class="fs-4 mb-4">Ready for the quiz?<br><br>
+                            Remember you can only attempt <strong>3 times</strong>. If you click
+                            <strong>Start Quiz</strong> button, it will be count as <strong>1 time</strong>. So be sure
+                            if you are ready for the quiz or not!!!
+                        </p>
+                        <a href="{% url 'quiz' %}" class="btn btn-info my-4">Start Quiz</a>
+                    {% endif %}
+                {% else %}
+                    <p class="fs-4 mb-4">Please Login to take the quiz</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

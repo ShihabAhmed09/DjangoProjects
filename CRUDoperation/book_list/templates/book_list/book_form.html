@@ -1,0 +1,29 @@
+{% extends 'book_list/base.html' %}
+
+{% block title %} Book Corner {% endblock title %}
+
+{% block css %} {% endblock css %}
+
+{% block body %}
+<div class="col-md-8 border shadow-sm offset-md-2 p-4 my-4">
+    <form method="post" class="p-4">  {% csrf_token %}
+        {% for item in form %}
+            <div class="mb-3">
+                {{ item.label_tag }} {{ item }}
+                <small class="text-danger">{{ item.errors|striptags }}</small>
+            </div>
+        {% endfor %}
+        <div class="form-group mb-3">
+            <button type="submit" class="btn btn-outline-primary mt-4 me-2">Save</button>
+            <a href="{% url 'book_list:home' %}" role="button" class="btn btn-outline-secondary mt-4">Cancel</a>
+        </div>
+        {% if form.non_field_errors %}
+            {% for error in form.non_field_errors %}
+                <p class="alert alert-danger my-3">{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+    </form>
+</div>
+{% endblock body %}
+
+{% block js %} {% endblock js %}

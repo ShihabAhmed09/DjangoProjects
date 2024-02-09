@@ -1,0 +1,52 @@
+{% extends 'quiz/main.html' %}
+
+{% block body %}
+<br>
+<div class="row my-4 justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header alert alert-info text-center">
+                <h3>Welcome to Quiz Portal</h3>
+            </div>
+            <div class="card-body">
+
+                <div align="right " id="displaytimer"><b>Timer: 0 seconds</b></div>
+
+                <form method="POST" action=""> {% csrf_token %}
+                    {% for question in questions %}
+                    <div class="form-group">
+                        <label for="question"><strong>{{ forloop.counter }}.</strong> {{ question.question }}</label>
+                    </div>
+                    <div class="form-check">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.question }}" id="option1"
+                                   value="{{ question.option_1 }}">
+                            <label class="form-check-label" for="option1">{{ question.option_1 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.question }}" id="option2"
+                                   value="{{ question.option_2 }}">
+                            <label class="form-check-label" for="option2">{{ question.option_2 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.question }}" id="option3"
+                                   value="{{ question.option_3 }}">
+                            <label class="form-check-label" for="option2">{{ question.option_3 }}</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="{{ question.question }}" id="option4"
+                                   value="{{ question.option_4 }}">
+                            <label class="form-check-label" for="option4">{{ question.option_4 }}</label>
+                        </div>
+                        <br>
+                    </div>
+                    {% endfor %}
+
+                    <input id='timer' type='hidden' name="timer" value="">
+                    <button type="submit" class="btn btn-info">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}

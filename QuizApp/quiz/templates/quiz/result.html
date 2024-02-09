@@ -1,0 +1,32 @@
+{% extends 'quiz/main.html' %}
+
+{% block body %}
+<br>
+<div class="row my-4 justify-content-center">
+    {% for result in results %}
+    <div class="col-md-6">
+        <div class="card-columns" style="padding: 10px; margin: 20px;">
+            <div class="card" align="centre " style="width: 32rem; border:4px black solid">
+                <img class="card-img-top" alt="Card image cap"
+                     src="http://kmit.in/emagazine/wp-content/uploads/2018/02/karnataka-results.jpg">
+                <div class="card-body">
+                    <h5 class="card-title">Quiz Taken: {{ result.created }}</h5>
+                    <h5 class="card-title">Score: {{ result.score }}</h5>
+                    <p class="card-text">Percentage: {{ result.percentage|floatformat:2 }}%</p>
+                    <p class="card-text">Time Taken: {{ result.time_taken }} seconds</p>
+                    <p class="card-text">Correct answers: {{ result.correct }}</p>
+                    <p class="card-text">Incorrect answers: {{ result.incorrect }}</p>
+                    <p class="card-text">Total questions: {{ result.total }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-md-6">
+        <div class="card card-body alert alert-info">
+            <h5 class="card-title text-center">You didn't participate in any quiz</h5>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock body %}
